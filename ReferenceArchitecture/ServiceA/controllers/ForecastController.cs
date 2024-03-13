@@ -1,23 +1,31 @@
 using Microsoft.AspNetCore.Mvc;
-using ServiceA.data;
 using ServiceA.models;
-using ServiceA.services;
 
 namespace ServiceA.controllers
 {
 
     [ApiController]
     [Route("api/[controller]")]
-    public class ForecastController(ForecastContext context, IForecastService forecastService) : ControllerBase
+    public class ForecastController() : ControllerBase
     {
         [HttpGet("{cityId}")]
         //[Trace(OperationName = "api.GetForecast", ResourceName = "Handler")]
-        public async Task<ActionResult<City>> Get([FromRoute(Name = "cityId")] int cityId)
+        public Task<ActionResult<City>> Get([FromRoute(Name = "cityId")] int cityId)
         {
-            var city = context.Cities.Single(x => x.Id == cityId);
-            city.Forecasts = await forecastService.GetForecasts(cityId);
+            var forecast = new Forecast()
+            {
+                Temperature = 73,
+                ForecastDate = new DateOnly(2024, 1, 1)
+            };
 
-            return city;
+            var city = new City()
+            {
+                Forecasts = new List<Forecast>() { forecast },
+                Id = 1,
+                Name = "Trophy Club"
+            };
+
+            return Task.FromResult<ActionResult<City>>(city);
         }
 
     }

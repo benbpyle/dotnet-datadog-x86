@@ -3252,26 +3252,25 @@
     ]
   },
   "packageFolders": {
-    "/Users/benjamen.pyle/.nuget/packages/": {}
+    "/Users/benjamen/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/benjamen.pyle/Development/dotnet/dd-ref-arch/ReferenceArchitecture/ServiceB/ServiceB.csproj",
+      "projectUniqueName": "/Users/benjamen/Development/dotnet/dd-ref/ReferenceArchitecture/ServiceB/ServiceB.csproj",
       "projectName": "ServiceB",
-      "projectPath": "/Users/benjamen.pyle/Development/dotnet/dd-ref-arch/ReferenceArchitecture/ServiceB/ServiceB.csproj",
-      "packagesPath": "/Users/benjamen.pyle/.nuget/packages/",
-      "outputPath": "/Users/benjamen.pyle/Development/dotnet/dd-ref-arch/ReferenceArchitecture/ServiceB/obj/",
+      "projectPath": "/Users/benjamen/Development/dotnet/dd-ref/ReferenceArchitecture/ServiceB/ServiceB.csproj",
+      "packagesPath": "/Users/benjamen/.nuget/packages/",
+      "outputPath": "/Users/benjamen/Development/dotnet/dd-ref/ReferenceArchitecture/ServiceB/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/benjamen.pyle/.nuget/NuGet/NuGet.Config"
+        "/Users/benjamen/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://awstfs.taxact.com/tfs/Software%20Development/_packaging/TaxActPackageFeed/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
@@ -3329,7 +3328,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
