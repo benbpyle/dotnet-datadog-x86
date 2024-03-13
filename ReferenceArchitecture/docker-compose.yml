@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   service-a:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile_a
+    image: 252703795646.dkr.ecr.us-west-2.amazonaws.com/test-images:dotnet    
     ports:
       - "8080:8080"
     depends_on:
@@ -18,24 +16,6 @@ services:
       DD_TRACE_SERVICE_MAPPING: "sql-server:servicea-bbp,http-client:servicea-bbp"
       DD_PROFILING_ENABLED: 1
 
-  service-b:
-    build:
-      context: ./
-      dockerfile: ./Dockerfile_b
-    #ports:
-      #- "8081:5001"
-    depends_on:
-      - datadog-agent
-    environment:      
-      DD_ENV: "local"
-      DD_SERVICE: "ServiceB-BBP"
-      DD_VERSION: "1.0.0"
-      DD_AGENT_HOST: "datadog-agent"
-      DD_TRACE_ROUTE_TEMPLATE_RESOURCE_NAMES_ENABLED: "true"
-      DD_RUNTIME_METRICS_ENABLED: "true"
-      DD_TRACE_SERVICE_MAPPING: "sql-server:serviceb-bbp"
-      DD_PROFILING_ENABLED: 1      
-  
   datadog-agent:
     image: "gcr.io/datadoghq/agent:latest"
     environment:

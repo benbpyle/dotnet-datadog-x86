@@ -40,7 +40,7 @@ RUN sh /opt/datadog/createLogPath.sh
 #RUN ls -ltr .  
 
 RUN apk add icu-dev
-
+RUN apk add gcompat
 #
 # Enable the tracer
 ENV CORECLR_ENABLE_PROFILING=1
