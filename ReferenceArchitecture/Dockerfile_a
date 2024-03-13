@@ -1,0 +1,55 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0.3-alpine3.18 AS base
+#USER $APP_UID
+WORKDIR /app
+EXPOSE 5098
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0  AS build
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src
+COPY ["ServiceA/ServiceA.csproj", "ServiceA/"]
+RUN dotnet restore "ServiceA/ServiceA.csproj"
+COPY . .
+WORKDIR "/src/ServiceA"
+
+RUN dotnet build "ServiceA.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# Download the latest version of the tracer but don't install yet
+RUN TRACER_VERSION=2.46.0 # =$(curl -s \https://api.github.com/repos/DataDog/dd-trace-dotnet/releases/latest | grep tag_name | cut -d '"' -f 4 | cut -c2-)
+RUN echo ${TRACER_VERSION} 
+RUN curl -Lo /tmp/datadog-dotnet-apm.tar.gz https://github.com/DataDog/dd-trace-dotnet/releases/download/v2.48.0/datadog-dotnet-apm-2.48.0-musl.tar.gz 
+
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "ServiceA.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
+#Implementing Data Dog APM
+# Download the latest version of the tracer but don't install yet
+
+RUN mkdir -p /opt/datadog  
+RUN mkdir -p /var/log/datadog
+
+COPY --from=build /tmp/datadog-dotnet-apm.tar.gz /opt/datadog/datadog-dotnet-apm.tar.gz
+
+#RUN ls -ltr /opt/datadog
+RUN cd /opt/datadog
+WORKDIR /opt/datadog
+#RUN ls -ltr .  
+RUN tar -xvf datadog-dotnet-apm.tar.gz
+RUN sh /opt/datadog/createLogPath.sh
+#RUN ls -ltr .  
+
+RUN apk add icu-dev
+
+#
+# Enable the tracer
+ENV CORECLR_ENABLE_PROFILING=1
+ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
+ENV CORECLR_PROFILER_PATH=/opt/datadog/linux-musl-x64/Datadog.Trace.ClrProfiler.Native.so
+ENV DD_DOTNET_TRACER_HOME=/opt/datadog
+ENV LD_PRELOAD=/opt/datadog/continuousprofiler/Datadog.Linux.ApiWrapper.x64.so
+ENV DD_PROFILING_ENABLED=1
+#
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ServiceA.dll"]
