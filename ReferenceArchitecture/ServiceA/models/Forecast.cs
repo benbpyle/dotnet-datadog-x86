@@ -1,3 +1,5 @@
+using System;
+
 namespace ServiceA.models;
 
 public record Forecast

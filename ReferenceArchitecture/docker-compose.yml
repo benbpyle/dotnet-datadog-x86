@@ -15,6 +15,10 @@ services:
       DD_RUNTIME_METRICS_ENABLED: "true"
       DD_TRACE_SERVICE_MAPPING: "sql-server:servicea-bbp,http-client:servicea-bbp"
       DD_PROFILING_ENABLED: 1
+      DD_PROFILING_ALLOCATION_ENABLED: true
+      DD_PROFILING_HEAP_ENABLED: true
+      
+
 
   datadog-agent:
     image: "gcr.io/datadoghq/agent:latest"
