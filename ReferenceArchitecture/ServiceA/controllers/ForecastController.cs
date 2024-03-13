@@ -21,12 +21,7 @@ namespace ServiceA.controllers
                 ForecastDate = new DateOnly(2024, 1, 1)
             };
 
-            var city = new City()
-            {
-                Forecasts = new List<Forecast>() { forecast },
-                Id = 1,
-                Name = "Trophy Club"
-            };
+            var city = new City(forecasts: new List<Forecast>() { forecast }, id: 1, name: "Trophy Club");
 
             return Task.FromResult<ActionResult<City>>(city);
         }
